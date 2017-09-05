@@ -1,0 +1,45 @@
+{
+  "name": "@maf/rest-client",
+  "version": "0.0.0",
+  "description": "rest service client",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf package coverage .nyc_output npm-debug.log",
+    "build": "./node_modules/.bin/babel src --out-dir ./package --presets es2015",
+    "build:for-test": "npm run build -- --plugins istanbul",
+    "build:package-json": "node ./scripts/copyPackageJson",
+    "dev": "npm run build -- --watch --plugins istanbul",
+    "test": "npm run lint && npm run build:for-test && ./node_modules/.bin/tap test/unit -J --coverage",
+    "test:fast": "./node_modules/.bin/tap test/unit -J",
+    "test:cov": "npm test -- --coverage-report=html",
+    "postversion": "git push origin && git push --tags",
+    "prepublish": "in-publish && echo 'use \"npm run _publish\"' && exit 1 || not-in-publish",
+    "_publish": "npm run clean && npm run build && npm run build:package-json && cd ./package && npm publish",
+    "pu": "npm run _publish",
+    "lint": "eslint -c .eslintrc.js --ignore-path .gitignore ."
+  },
+  "repository": "git@github.com:mafjs/rest-client.git",
+  "author": "alekzonder <alekzonder@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "maf-chain": "^1.0.0",
+    "maf-error": "^1.2.0",
+    "superagent": "^3.6.0"
+  },
+  "devDependencies": {
+    "@maf/eslint-config": "^0.2.0",
+    "babel-cli": "6.x",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-istanbul": "4.x",
+    "babel-preset-es2015": "6.x",
+    "coveralls": "2.x",
+    "in-publish": "^2.0.0",
+    "maf-logger": "^0.4.0"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/*.js"
+    ]
+  }
+}
