@@ -1632,9 +1632,9 @@ maf-error@^1.2.0:
   dependencies:
     terror "1.4.x"
 
-maf-logger@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/maf-logger/-/maf-logger-0.5.0.tgz#ed9ac825ed5ac424e569c9eafe2afea618843ea1"
+maf-logger@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/maf-logger/-/maf-logger-0.6.0.tgz#b00b02ffd97d3c6c3997a7e4c21d124ee184d591"
   dependencies:
     bunyan "^1.8.12"
 

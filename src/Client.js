@@ -2,14 +2,23 @@ import request from 'superagent';
 
 import Chain from 'maf-chain';
 
-import ClientResponse from './Response';
+import Response from './Response';
 
-class RestClient {
+export default class RestClient {
 
     constructor (logger, config) {
+
+        this.Response = Response;
+
         this._logger = logger;
         this._config = config;
-        this._base = config.base;
+
+        this._base = null;
+
+        if (this._config && this._config.base) {
+            this._base = config.base;
+        }
+
     }
 
     req (method, url) {
@@ -95,7 +104,7 @@ class RestClient {
 
                 this['_send' + method](req)
                     .then((res) => {
-                        let response = new ClientResponse(res);
+                        let response = new this.Response(res);
                         resolve(response);
                     })
                     .catch((error) => {
@@ -207,6 +216,10 @@ class RestClient {
             http.query(req.query);
         }
 
+        if (req.body) {
+            http.send(req.body);
+        }
+
         if (req.headers) {
             http.set(req.headers);
         }
@@ -236,5 +249,3 @@ class RestClient {
         return error;
     }
 }
-
-module.exports = RestClient;

@@ -1,7 +1,11 @@
-class ClientResponse {
+class Response {
 
     constructor (res) {
         this._res = res;
+    }
+
+    body () {
+        return this._res.body;
     }
 
     one () {
@@ -23,6 +27,15 @@ class ClientResponse {
     requestId () {
         return this._res.headers['x-request-id'];
     }
+
+    headers () {
+        return this._res.headers;
+    }
+
+    header (name) {
+        name = name.toLowerCase();
+        return this._res.headers[name];
+    }
 }
 
-module.exports = ClientResponse;
+module.exports = Response;

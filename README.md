@@ -1,1 +1,1 @@
-- [ ] интерфейс над superagent с обработкой ошибок и body (result как объект для getOne и как массив)
+# @maf/rest-client
