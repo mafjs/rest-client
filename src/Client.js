@@ -21,7 +21,7 @@ export default class RestClient {
 
     }
 
-    req (method, url) {
+    req (method, url, logger) {
 
         var steps = {
             method: null,
@@ -72,29 +72,29 @@ export default class RestClient {
         }
 
         chain.onExec((req) => {
-            return this._send(req);
+            return this._send(req, logger);
         });
 
         return chain;
     }
 
-    get (url) {
-        return this.req('GET', url);
+    get (url, logger) {
+        return this.req('GET', url, logger);
     }
 
-    post (url) {
-        return this.req('POST', url);
+    post (url, logger) {
+        return this.req('POST', url, logger);
     }
 
-    patch (url) {
-        return this.req('PATCH', url);
+    patch (url, logger) {
+        return this.req('PATCH', url, logger);
     }
 
-    del (url) {
-        return this.req('DELETE', url);
+    del (url, logger) {
+        return this.req('DELETE', url, logger);
     }
 
-    _send (req) {
+    _send (req, logger) {
 
         return new Promise((resolve, reject) => {
 
@@ -102,7 +102,7 @@ export default class RestClient {
 
             if (['GET', 'POST', 'PATCH', 'DELETE'].indexOf(method) > -1) {
 
-                this['_send' + method](req)
+                this['_send' + method](req, logger)
                     .then((res) => {
                         let response = new this.Response(res);
                         resolve(response);
@@ -119,10 +119,12 @@ export default class RestClient {
 
     }
 
-    _sendGET (req) {
+    _sendGET (req, logger) {
 
         return new Promise((resolve, reject) => {
-            this._logger.trace(req, 'GET');
+            logger = logger || this._logger;
+
+            logger.trace(req, 'GET');
 
             let http = request.get(req.url);
 
@@ -139,10 +141,12 @@ export default class RestClient {
 
     }
 
-    _sendPOST (req) {
+    _sendPOST (req, logger) {
 
         return new Promise((resolve, reject) => {
-            this._logger.trace(req, 'POST');
+            logger = logger || this._logger;
+
+            logger.trace(req, 'POST');
 
             let http = request.post(req.url);
 
@@ -163,10 +167,13 @@ export default class RestClient {
 
     }
 
-    _sendPATCH (req) {
+    _sendPATCH (req, logger) {
 
         return new Promise((resolve, reject) => {
-            this._logger.trace(req, 'PATCH');
+
+            logger = logger || this._logger;
+
+            logger.trace(req, 'PATCH');
 
             let http = request.patch(req.url);
 
@@ -187,10 +194,12 @@ export default class RestClient {
 
     }
 
-    _sendDELETE (req) {
+    _sendDELETE (req, logger) {
 
         return new Promise((resolve, reject) => {
-            this._logger.trace(req, 'DELETE');
+            logger = logger || this._logger;
+
+            logger.trace(req, 'DELETE');
 
             let http = request.del(req.url);
 
