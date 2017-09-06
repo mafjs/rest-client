@@ -34,7 +34,7 @@
     "babel-preset-es2015": "^6.24.1",
     "coveralls": "^2.13.1",
     "in-publish": "^2.0.0",
-    "maf-logger": "^0.6.0"
+    "maf-logger": "^0.6.1"
   },
   "nyc": {
     "all": true,
