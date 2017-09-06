@@ -35,6 +35,8 @@ export default class RestClient {
                 return value;
             },
 
+            timeout: null,
+
             requestId: (data, value) => {
 
                 if (!data.headers) {
@@ -62,7 +64,9 @@ export default class RestClient {
 
         var defaults = {
             method: method,
-            stream: false
+            stream: false,
+            timeout: 1500,
+            query: {}
         };
 
         var chain = new Chain(steps, defaults);
@@ -221,7 +225,7 @@ export default class RestClient {
     }
 
     _processBasicData (http, req) {
-        if (req.query) {
+        if (Object.keys(req.query).length) {
             http.query(req.query);
         }
 
@@ -235,6 +239,10 @@ export default class RestClient {
 
         if (req.auth) {
             http.auth(req.auth.user, req.auth.password);
+        }
+
+        if (req.timeout) {
+            http.timeout(req.timeout);
         }
     }
 
