@@ -2,6 +2,8 @@ import request from 'superagent';
 
 import Chain from 'maf-chain';
 
+import ClientResponse from './Response';
+
 class RestClient {
 
     constructor (logger, config) {
@@ -10,7 +12,7 @@ class RestClient {
         this._base = config.base;
     }
 
-    req (url) {
+    req (method, url) {
 
         var steps = {
             method: null,
@@ -50,7 +52,7 @@ class RestClient {
         };
 
         var defaults = {
-            method: 'GET',
+            method: method,
             stream: false
         };
 
@@ -67,6 +69,22 @@ class RestClient {
         return chain;
     }
 
+    get (url) {
+        return this.req('GET', url);
+    }
+
+    post (url) {
+        return this.req('POST', url);
+    }
+
+    patch (url) {
+        return this.req('PATCH', url);
+    }
+
+    del (url) {
+        return this.req('DELETE', url);
+    }
+
     _send (req) {
 
         return new Promise((resolve, reject) => {
@@ -77,7 +95,8 @@ class RestClient {
 
                 this['_send' + method](req)
                     .then((res) => {
-                        resolve(res);
+                        let response = new ClientResponse(res);
+                        resolve(response);
                     })
                     .catch((error) => {
                         reject(error);
