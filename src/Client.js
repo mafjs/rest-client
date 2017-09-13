@@ -15,7 +15,7 @@ export default class RestClient {
 
         this._base = null;
 
-        if (this._config && this._config.base) {
+        if (this._config && typeof this._config.base !== 'undefined') {
             this._base = config.base;
         }
 
