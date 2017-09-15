@@ -263,6 +263,14 @@ export default class RestClient {
             error.details = error.response.body.error.details;
         }
 
+        error.req = {
+            connection: 'fake conn',
+            method: req.method,
+            url: req.url,
+            headers: req.headers,
+            req_id: req.requestId
+        };
+
         return error;
     }
 }
