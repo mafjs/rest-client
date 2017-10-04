@@ -83,7 +83,7 @@ export default class RestClient {
 
             query: null,
             cookies: null,
-            headers: {},
+            headers: null,
             stream: null,
             body: null,
             auth: function (data, user, password) {
@@ -99,7 +99,8 @@ export default class RestClient {
             method: method,
             stream: false,
             timeout: 1500,
-            query: {}
+            query: {},
+            headers: {}
         };
 
         var chain = new Chain(steps, defaults);
