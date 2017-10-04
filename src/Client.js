@@ -19,6 +19,12 @@ export default class RestClient {
             this._base = config.base;
         }
 
+        this._useragent = null;
+
+        if (this._config && this._config.useragent) {
+            this._useragent = this._config.useragent;
+        }
+
     }
 
     req (method, url, logger) {
@@ -39,18 +45,45 @@ export default class RestClient {
 
             requestId: (data, value) => {
 
+                if (typeof value === 'undefined') {
+                    return;
+                }
+
                 if (!data.headers) {
                     data.headers = {};
                 }
 
-                data.id = value;
+                data.headers['x-request-id'] = value;
+            },
+
+            reqId: (data, value) => {
+
+                if (typeof value === 'undefined') {
+                    return;
+                }
+
+                if (!data.headers) {
+                    data.headers = {};
+                }
 
                 data.headers['x-request-id'] = value;
             },
 
+            useragent: (data, value) => {
+                if (typeof value === 'undefined') {
+                    return;
+                }
+
+                if (!data.headers) {
+                    data.headers = {};
+                }
+
+                data.headers['user-agent'] = value;
+            },
+
             query: null,
             cookies: null,
-            headers: null,
+            headers: {},
             stream: null,
             body: null,
             auth: function (data, user, password) {
@@ -76,6 +109,10 @@ export default class RestClient {
         }
 
         chain.onExec((req) => {
+            if (!req.headers['user-agent'] && this._useragent) {
+                req.headers['user-agent'] = this._useragent;
+            }
+
             return this._send(req, logger);
         });
 
