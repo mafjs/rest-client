@@ -25,6 +25,18 @@ export default class RestClient {
             this._useragent = this._config.useragent;
         }
 
+        this._accessTokenQueryName = 'token';
+
+        if (this._config && this._config.accessTokenQueryName) {
+            this._accessTokenQueryName = this._config.accessTokenQueryName;
+        }
+
+        this._accessToken = null;
+
+    }
+
+    setAccessToken (token) {
+        this._accessToken = token;
     }
 
     req (method, url, logger) {
@@ -81,7 +93,7 @@ export default class RestClient {
                 data.headers['user-agent'] = value;
             },
 
-            query: null,
+            query: {},
             cookies: null,
             headers: null,
             stream: null,
@@ -112,6 +124,10 @@ export default class RestClient {
         chain.onExec((req) => {
             if (!req.headers['user-agent'] && this._useragent) {
                 req.headers['user-agent'] = this._useragent;
+            }
+
+            if (this._accessToken) {
+                req.query[this._accessTokenQueryName] = this._accessToken;
             }
 
             return this._send(req, logger);
