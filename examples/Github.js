@@ -1,8 +1,8 @@
 'use strict';
 
-var RestClient = require('../package');
+var RestClient = require('../dist');
 
-var Response = require('../package/Response');
+var Response = require('../dist/Response');
 
 class GithubResponse extends Response {
 

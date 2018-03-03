@@ -4,8 +4,8 @@
   "description": "rest service client",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf package coverage .nyc_output npm-debug.log",
-    "build": "./node_modules/.bin/babel src --out-dir ./package --presets es2015",
+    "clean": "rm -rf dist package coverage .nyc_output npm-debug.log",
+    "build": "./node_modules/.bin/babel src --out-dir ./dist --presets es2015",
     "build:for-test": "npm run build -- --plugins istanbul",
     "build:package-json": "node ./scripts/copyPackageJson",
     "dev": "npm run build -- --watch --plugins istanbul",
@@ -14,7 +14,7 @@
     "test:cov": "npm test -- --coverage-report=html",
     "postversion": "git push origin && git push --tags",
     "prepublish": "in-publish && echo 'use \"npm run _publish\"' && exit 1 || not-in-publish",
-    "_publish": "npm run clean && npm run build && npm run build:package-json && cd ./package && npm publish",
+    "_publish": "npm run clean && npm run build && npm run build:package-json && cd ./dist && npm publish",
     "pu": "npm run _publish",
     "lint": "eslint -c .eslintrc.js --ignore-path .gitignore ."
   },
