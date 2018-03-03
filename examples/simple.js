@@ -1,10 +1,10 @@
-var GithubClient = require('./Github');
+let GithubClient = require('./Github');
 
-var logger = require('maf-logger').create('example', {logResponseBody: true});
+let logger = require('maf-logger').create('example', {logResponseBody: true});
 
 logger.level('trace');
 
-var client = new GithubClient(logger);
+let client = new GithubClient(logger);
 
 client.getUser('alekzonder')
     .then((res) => {

@@ -1,38 +1,37 @@
 class Response {
-
-    constructor (res) {
+    constructor(res) {
         this._res = res;
     }
 
-    body () {
+    body() {
         return this._res.body;
     }
 
-    one () {
+    one() {
         return this._res.body.result;
     }
 
-    raw () {
+    raw() {
         return this._res.text;
     }
 
-    metadata () {
+    metadata() {
         return this._res.body.metadata;
     }
 
-    many () {
+    many() {
         return this._res.body.result;
     }
 
-    requestId () {
+    requestId() {
         return this._res.headers['x-request-id'];
     }
 
-    headers () {
+    headers() {
         return this._res.headers;
     }
 
-    header (name) {
+    header(name) {
         name = name.toLowerCase();
         return this._res.headers[name];
     }

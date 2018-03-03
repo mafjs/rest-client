@@ -1,33 +1,30 @@
 'use strict';
 
-var RestClient = require('../dist');
+let RestClient = require('../dist');
 
-var Response = require('../dist/Response');
+let Response = require('../dist/Response');
 
 class GithubResponse extends Response {
-
-    get user () {
+    get user() {
         return this.body();
     }
 
-    get rateLimit () {
+    get rateLimit() {
         return this.header('X-RateLimit-Limit');
     }
 
-    get remainingRateLimit () {
+    get remainingRateLimit() {
         return this.header('X-RateLimit-Remaining');
     }
 
-    get rateLimitReset () {
+    get rateLimitReset() {
         return this.header('X-RateLimit-Reset');
     }
-
 }
 
 
 class GithubClient extends RestClient {
-
-    constructor (logger, config) {
+    constructor(logger, config) {
         super(logger, config);
 
         if (!this._base) {
@@ -37,14 +34,13 @@ class GithubClient extends RestClient {
         this.Response = GithubResponse;
     }
 
-    getUser (user) {
+    getUser(user) {
         return this.get(`/users/${user}`).exec();
     }
 
-    getUserRepos (user) {
+    getUserRepos(user) {
         return this.get(`/users/${user}/repos`);
     }
-
 }
 
 module.exports = GithubClient;

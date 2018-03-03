@@ -5,9 +5,7 @@ import Chain from 'maf-chain';
 import Response from './Response';
 
 export default class RestClient {
-
-    constructor (logger, config) {
-
+    constructor(logger, config) {
         this.Response = Response;
 
         this._logger = logger;
@@ -32,20 +30,17 @@ export default class RestClient {
         }
 
         this._accessToken = null;
-
     }
 
-    setAccessToken (token) {
+    setAccessToken(token) {
         this._accessToken = token;
     }
 
-    req (method, url, logger) {
-
-        var steps = {
+    req(method, url, logger) {
+        let steps = {
             method: null,
 
             url: (data, value) => {
-
                 if (typeof value === 'string' && value[0] === '/') {
                     return `${this._base}${value}`;
                 }
@@ -56,7 +51,6 @@ export default class RestClient {
             timeout: null,
 
             requestId: (data, value) => {
-
                 if (typeof value === 'undefined') {
                     return;
                 }
@@ -69,7 +63,6 @@ export default class RestClient {
             },
 
             reqId: (data, value) => {
-
                 if (typeof value === 'undefined') {
                     return;
                 }
@@ -98,7 +91,7 @@ export default class RestClient {
             headers: null,
             stream: null,
             body: null,
-            auth: function (data, user, password) {
+            auth: function(data, user, password) {
                 data.auth = {
                     user,
                     password
@@ -107,7 +100,7 @@ export default class RestClient {
 
         };
 
-        var defaults = {
+        let defaults = {
             method: method,
             stream: false,
             timeout: 1500,
@@ -115,7 +108,7 @@ export default class RestClient {
             headers: {}
         };
 
-        var chain = new Chain(steps, defaults);
+        let chain = new Chain(steps, defaults);
 
         if (typeof url !== 'undefined') {
             chain.url(url);
@@ -136,30 +129,27 @@ export default class RestClient {
         return chain;
     }
 
-    get (url, logger) {
+    get(url, logger) {
         return this.req('GET', url, logger);
     }
 
-    post (url, logger) {
+    post(url, logger) {
         return this.req('POST', url, logger);
     }
 
-    patch (url, logger) {
+    patch(url, logger) {
         return this.req('PATCH', url, logger);
     }
 
-    del (url, logger) {
+    del(url, logger) {
         return this.req('DELETE', url, logger);
     }
 
-    _send (req, logger) {
-
+    _send(req, logger) {
         return new Promise((resolve, reject) => {
-
             let method = req.method.toUpperCase();
 
             if (['GET', 'POST', 'PATCH', 'DELETE'].indexOf(method) > -1) {
-
                 this['_send' + method](req, logger)
                     .then((res) => {
                         let response = new this.Response(res);
@@ -168,17 +158,13 @@ export default class RestClient {
                     .catch((error) => {
                         reject(error);
                     });
-
             } else {
                 reject(new this.Error('unsupported method' + method));
             }
-
         });
-
     }
 
-    _sendGET (req, logger) {
-
+    _sendGET(req, logger) {
         return new Promise((resolve, reject) => {
             logger = logger || this._logger;
 
@@ -196,11 +182,9 @@ export default class RestClient {
                     reject(this._processError(req, error));
                 });
         });
-
     }
 
-    _sendPOST (req, logger) {
-
+    _sendPOST(req, logger) {
         return new Promise((resolve, reject) => {
             logger = logger || this._logger;
 
@@ -222,13 +206,10 @@ export default class RestClient {
                     reject(this._processError(req, error));
                 });
         });
-
     }
 
-    _sendPATCH (req, logger) {
-
+    _sendPATCH(req, logger) {
         return new Promise((resolve, reject) => {
-
             logger = logger || this._logger;
 
             logger.trace(req, 'PATCH');
@@ -249,11 +230,9 @@ export default class RestClient {
                     reject(this._processError(req, error));
                 });
         });
-
     }
 
-    _sendDELETE (req, logger) {
-
+    _sendDELETE(req, logger) {
         return new Promise((resolve, reject) => {
             logger = logger || this._logger;
 
@@ -275,10 +254,9 @@ export default class RestClient {
                     reject(this._processError(req, error));
                 });
         });
-
     }
 
-    _processBasicData (http, req) {
+    _processBasicData(http, req) {
         if (Object.keys(req.query).length) {
             http.query(req.query);
         }
@@ -300,7 +278,7 @@ export default class RestClient {
         }
     }
 
-    _processError (req, error) {
+    _processError(req, error) {
         error.req = req;
         error.res = error.response;
 

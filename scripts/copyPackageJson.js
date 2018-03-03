@@ -1,4 +1,4 @@
-var pkg = require(__dirname + '/../package.json');
+let pkg = require(__dirname + '/../package.json');
 
 delete pkg.scripts.prepublish;
 delete pkg.nyc;
